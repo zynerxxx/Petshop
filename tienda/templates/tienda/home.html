@@ -1,0 +1,197 @@
+{% extends 'tienda/base.html' %}
+{% block content %}
+<h1 class="mb-4 pastel-title">Bienvenido a Petshop</h1>
+<p class="lead">¡Explora nuestros productos y encuentra lo mejor para tu mascota!</p>
+
+{% if not user.is_authenticated %}
+<div class="row justify-content-center mb-4">
+  <div class="col-md-6 col-lg-5">
+    <div class="card pastel-card p-4 text-center">
+      <h2 class="mb-3">Bienvenido a Petshop</h2>
+      <p class="mb-4">¡Explora nuestros productos y encuentra lo mejor para tu mascota!</p>
+      <a href="{% url 'login' %}" class="btn btn-pastel mb-2 w-100"><i class="bi bi-box-arrow-in-right"></i> Iniciar sesión</a>
+      <a href="{% url 'registro' %}" class="btn btn-outline-secondary w-100"><i class="bi bi-person-plus"></i> Registrarse</a>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% if productos %}
+<fieldset class="mb-5 pastel-fieldset">
+  <legend class="mb-3 pastel-title"><i class="bi bi-box-seam"></i> Productos para tu mascota</legend>
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+    {% for producto in productos %}
+    <div class="col">
+      <div class="card pastel-card h-100 d-flex flex-column align-items-stretch producto-card w-100">
+        <div class="producto-img-wrapper d-flex align-items-center justify-content-center" style="min-height:120px; background: #fff; color: #232946;">
+          {% if producto.thumbnail_url %}
+            <img src="{{ producto.thumbnail_url }}" class="card-img-top producto-img" alt="{{ producto.nombre }}">
+          {% else %}
+            <span class="text-muted-50" style="font-size:2.5rem;"><i class="bi bi-image"></i></span>
+          {% endif %}
+        </div>
+        <div class="card-body d-flex flex-column flex-grow-1" style="color: #232946; background: #fff;">
+          <h5 class="card-title mb-1">{{ producto.nombre }}</h5>
+          <p class="card-text mb-2">{{ producto.descripcion }}</p>
+          <span class="pastel-precio">${{ producto.precio }}</span>
+          {% if producto.categoria %}
+          <p class="mt-2 mb-2"><span class="badge bg-secondary"><i class="bi bi-tag"></i> {{ producto.categoria.nombre }}</span></p>
+          {% endif %}
+          <div class="mt-auto d-flex flex-column gap-2">
+            <a href="{% url 'producto_detalle' producto.id %}" class="btn btn-pastel-detalle w-100"><i class="bi bi-eye"></i> Ver detalle</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'agregar_al_carrito' producto.id %}" class="btn btn-pastel w-100"><i class="bi bi-cart-plus"></i> Agregar</a>
+            {% else %}
+            <a href="/login/" class="btn btn-outline-secondary w-100"><i class="bi bi-box-arrow-in-right"></i> Inicia sesión para comprar</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="text-end mt-2">
+    <a href="{% url 'productos' %}" class="btn btn-link"><i class="bi bi-box-seam"></i> Ver todos los productos</a>
+  </div>
+</fieldset>
+{% endif %}
+
+{% if accesorios %}
+<fieldset class="mb-5 pastel-fieldset">
+  <legend class="mb-3 pastel-title"><i class="bi bi-bag-heart"></i> Accesorios para tu mascota</legend>
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+    {% for accesorio in accesorios %}
+    <div class="col">
+      <div class="card pastel-card h-100 d-flex flex-column align-items-stretch producto-card w-100">
+        <div class="producto-img-wrapper d-flex align-items-center justify-content-center" style="min-height:120px; background: #fff; color: #232946;">
+          {% if accesorio.thumbnail_url %}
+            <img src="{{ accesorio.thumbnail_url }}" class="card-img-top producto-img" alt="{{ accesorio.nombre }}">
+          {% else %}
+            <span class="text-muted-50" style="font-size:2.5rem;"><i class="bi bi-image"></i></span>
+          {% endif %}
+        </div>
+        <div class="card-body d-flex flex-column flex-grow-1" style="color: #232946; background: #fff;">
+          <h5 class="card-title mb-1">{{ accesorio.nombre }}</h5>
+          <p class="card-text mb-2">{{ accesorio.descripcion }}</p>
+          <span class="pastel-precio">${{ accesorio.precio }}</span>
+          {% if accesorio.categoria %}
+          <p class="mt-2 mb-2"><span class="badge bg-secondary"><i class="bi bi-tag"></i> {{ accesorio.categoria.nombre }}</span></p>
+          {% endif %}
+          <div class="mt-auto d-flex flex-column gap-2">
+            <a href="{% url 'accesorio_detalle' accesorio.id %}" class="btn btn-pastel-detalle w-100"><i class="bi bi-eye"></i> Ver detalle</a>
+            {% if user.is_authenticated %}
+            <a href="{% url 'agregar_accesorio_al_carrito' accesorio.id %}" class="btn btn-pastel w-100"><i class="bi bi-cart-plus"></i> Agregar</a>
+            {% else %}
+            <a href="/login/" class="btn btn-outline-secondary w-100"><i class="bi bi-box-arrow-in-right"></i> Inicia sesión para comprar</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="text-end mt-2">
+    <a href="{% url 'accesorios' %}" class="btn btn-link"><i class="bi bi-bag-heart"></i> Ver todos los accesorios</a>
+  </div>
+</fieldset>
+{% endif %}
+<script>
+function mostrarToastCarrito(msg, tipo = 'success') {
+  // Eliminar toasts anteriores
+  document.querySelectorAll('.toast.pastel-toast').forEach(t => t.remove());
+  let toast = document.createElement('div');
+  toast.className = `toast align-items-center text-bg-${tipo} border-0 show pastel-toast`;
+  toast.style.minWidth = '220px';
+  toast.style.marginBottom = '1rem';
+  toast.style.position = 'fixed';
+  toast.style.top = '80px';
+  toast.style.right = '20px';
+  toast.style.zIndex = 3000;
+  toast.innerHTML = `<div class=\"d-flex\"><div class=\"toast-body\">${msg}</div><button type=\"button\" class=\"btn-close btn-close-white me-2 m-auto\" data-bs-dismiss=\"toast\"></button></div>`;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2500);
+}
+
+function actualizarMiniCarrito(cantidad) {
+  const badge = document.querySelector('.nav-link[href="/carrito/"] .badge');
+  if (badge) {
+    if (cantidad > 0) {
+      badge.textContent = cantidad > 9 ? '+9' : cantidad;
+      badge.style.display = '';
+    } else {
+      badge.style.display = 'none';
+    }
+  } else {
+    // Si no existe el badge, lo creamos dinámicamente
+    const navLink = document.querySelector('.nav-link[href="/carrito/"]');
+    if (navLink && cantidad > 0) {
+      const newBadge = document.createElement('span');
+      newBadge.className = 'position-absolute top-0 start-100 translate-middle badge rounded-pill bg-info';
+      newBadge.style.fontSize = '0.8em';
+      newBadge.textContent = cantidad > 9 ? '+9' : cantidad;
+      navLink.appendChild(newBadge);
+    }
+  }
+}
+
+function bindAgregarCarritoBtns() {
+  document.querySelectorAll('.btn-pastel.w-100').forEach(btn => {
+    if (btn.dataset.ajaxBound) return;
+    btn.dataset.ajaxBound = '1';
+    if (btn.href.includes('/agregar/')) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const productoId = btn.href.split('/agregar/')[1].replace('/', '');
+        fetch('{% url "ajax_agregar_al_carrito" %}', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          body: `producto_id=${productoId}`
+        })
+        .then(r => r.json())
+        .then(data => {
+          if (data.ok) {
+            mostrarToastCarrito(data.msg, 'success');
+            actualizarMiniCarrito(data.carrito_cantidad);
+          } else {
+            mostrarToastCarrito(data.msg, 'danger');
+          }
+        });
+      });
+    }
+    if (btn.href.includes('/agregar-accesorio/')) {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const accesorioId = btn.href.split('/agregar-accesorio/')[1].replace('/', '');
+        fetch('{% url "ajax_agregar_al_carrito" %}', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'X-CSRFToken': '{{ csrf_token }}'
+          },
+          body: `accesorio_id=${accesorioId}`
+        })
+        .then(r => r.json())
+        .then(data => {
+          if (data.ok) {
+            mostrarToastCarrito(data.msg, 'success');
+            actualizarMiniCarrito(data.carrito_cantidad);
+          } else {
+            mostrarToastCarrito(data.msg, 'danger');
+          }
+        });
+      });
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(function() {
+    document.querySelectorAll('.producto-card').forEach(card => card.classList.add('visible'));
+    bindAgregarCarritoBtns();
+  }, 100);
+});
+</script>
+{% endblock %}

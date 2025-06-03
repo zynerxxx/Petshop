@@ -1,0 +1,303 @@
+{% extends 'tienda/base.html' %}
+{% block content %}
+<h1 class="mb-4 pastel-title"><i class="bi bi-cart"></i> Carrito de Compras</h1>
+{% if items %}
+<table class="table table-hover pastel-table align-middle" id="tabla-carrito">
+  <thead>
+    <tr>
+      <th><i class="bi bi-box-seam"></i> Producto</th>
+      <th><i class="bi bi-hash"></i> Cantidad</th>
+      <th><i class="bi bi-currency-dollar"></i> Precio</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+    <tr data-item-id="{{ item.id }}">
+      <td>
+        {% if item.producto %}
+          <i class="bi bi-cube"></i> {{ item.producto.nombre }} <span class="badge badge-producto"><i class="bi bi-box"></i> Producto</span>
+        {% elif item.accesorio %}
+          <i class="bi bi-gem"></i> {{ item.accesorio.nombre }} <span class="badge badge-accesorio"><i class="bi bi-puzzle"></i> Accesorio</span>
+        {% endif %}
+      </td>
+      <td>
+        <div class="d-flex align-items-center gap-2">
+          <button class="btn btn-cantidad btn-outline-warning btn-disminuir" title="Disminuir cantidad"><i class="bi bi-dash"></i></button>
+          <span class="mx-1 cantidad">{{ item.cantidad }}</span>
+          <button class="btn btn-cantidad btn-outline-success btn-aumentar {% if not item.producto and not item.accesorio %}disabled{% endif %}" title="Aumentar cantidad"><i class="bi bi-plus"></i></button>
+        </div>
+      </td>
+      <td>
+        {% if item.producto %}
+          <strong>${{ item.producto.precio|floatformat:2 }}</strong>
+        {% elif item.accesorio %}
+          <strong>${{ item.accesorio.precio|floatformat:2 }}</strong>
+        {% else %}
+          ---
+        {% endif %}
+      </td>
+      <td>
+        <button class="btn btn-outline-danger btn-eliminar" title="Eliminar"><i class="bi bi-trash"></i></button>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<div class="mb-3">
+  <strong>Total: $<span id="carrito-total">{{ total|floatformat:2 }}</span> <i class="bi bi-currency-dollar"></i></strong>
+</div>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <a href="/productos/" class="btn btn-outline-primary pastel-btn-seguir-comprando animate__animated animate__pulse animate__infinite" id="btn-seguir-comprando">
+    <i class="bi bi-arrow-left"></i> Seguir comprando
+  </a>
+  <div>
+    <button type="button" class="btn btn-dark me-2 px-4" data-bs-toggle="modal" data-bs-target="#modalConfirmarCompra">
+      <i class="bi bi-bag-check" style="color:#fff;"></i> Comprar
+    </button>
+    <button type="button" class="btn btn-outline-secondary px-4" data-bs-toggle="modal" data-bs-target="#modalVaciarCarrito">
+      <i class="bi bi-trash"></i> Vaciar carrito
+    </button>
+  </div>
+</div>
+<div id="carrito-toast-zone" style="position:fixed;top:80px;right:20px;z-index:3000;"></div>
+
+<!-- Modal de confirmación de compra -->
+<div class="modal fade" id="modalConfirmarCompra" tabindex="-1" aria-labelledby="modalConfirmarCompraLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalConfirmarCompraLabel"><i class="bi bi-bag-check" style="color:#fff;"></i> Confirmar compra</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <h6 class="mb-3"><i class="bi bi-cart4"></i> Resumen de tu carrito:</h6>
+        <ul class="list-group list-group-flush mb-3">
+          {% for item in items %}
+          <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 pb-2" style="background:transparent;">
+            <div>
+              {% if item.producto %}
+                <i class="bi bi-cube"></i> {{ item.producto.nombre }} <span class="badge badge-producto"><i class="bi bi-box"></i> Producto</span>
+                <span class="text-muted ms-2">x{{ item.cantidad }}</span>
+              {% elif item.accesorio %}
+                <i class="bi bi-gem"></i> {{ item.accesorio.nombre }} <span class="badge badge-accesorio"><i class="bi bi-puzzle"></i> Accesorio</span>
+                <span class="text-muted ms-2">x{{ item.cantidad }}</span>
+              {% endif %}
+            </div>
+            <span class="fw-bold">
+              {% if item.producto %}
+                ${{ item.producto.precio|floatformat:2 }}
+              {% elif item.accesorio %}
+                ${{ item.accesorio.precio|floatformat:2 }}
+              {% endif %}
+            </span>
+          </li>
+          {% endfor %}
+        </ul>
+        <div class="alert alert-info mt-3 mb-0 border-0" style="background:#f5f6fa; color:#232946;">
+          <i class="bi bi-info-circle"></i> ¿Deseas confirmar tu compra por <strong>${{ total|floatformat:2 }}</strong>?
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancelar</button>
+        <a href="{% url 'realizar_compra' %}" class="btn btn-dark px-4"><i class="bi bi-bag-check" style="color:#fff;"></i> Confirmar compra</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal de confirmación para vaciar carrito -->
+<div class="modal fade" id="modalVaciarCarrito" tabindex="-1" aria-labelledby="modalVaciarCarritoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalVaciarCarritoLabel"><i class="bi bi-exclamation-triangle text-danger"></i> Confirmar acción</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <i class="bi bi-trash3 text-danger"></i> ¿Estás seguro de que deseas vaciar el carrito? Esta acción no se puede deshacer.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary px-4" data-bs-dismiss="modal"><i class="bi bi-x-circle"></i> Cancelar</button>
+        <form method="post" action="{% url 'vaciar_carrito' %}">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-dark px-4"><i class="bi bi-trash" style="color:#fff;"></i> Vaciar carrito</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function mostrarToast(msg, tipo = 'success') {
+  let toast = document.createElement('div');
+  toast.className = `toast align-items-center text-bg-${tipo} border-0 show pastel-toast`;
+  toast.style.minWidth = '220px';
+  toast.style.marginBottom = '1rem';
+  toast.innerHTML = `<div class=\"d-flex\"><div class=\"toast-body\">${msg}</div><button type=\"button\" class=\"btn-close btn-close-white me-2 m-auto\" data-bs-dismiss=\"toast\"></button></div>`;
+  document.getElementById('carrito-toast-zone').appendChild(toast);
+  setTimeout(() => toast.remove(), 2500);
+}
+
+function actualizarMiniCarrito(cantidad) {
+  const badge = document.querySelector('.nav-link[href="/carrito/"] .badge');
+  if (badge) {
+    if (cantidad > 0) {
+      badge.textContent = cantidad > 9 ? '+9' : cantidad;
+      badge.style.display = '';
+    } else {
+      badge.style.display = 'none';
+    }
+  }
+}
+
+function obtenerCantidadCarrito() {
+  let suma = 0;
+  document.querySelectorAll('#tabla-carrito tbody tr .cantidad').forEach(span => {
+    suma += parseInt(span.textContent);
+  });
+  return suma;
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Disminuir cantidad
+  document.querySelectorAll('.btn-disminuir').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const tr = btn.closest('tr');
+      const itemId = tr.dataset.itemId;
+      let cantidad = parseInt(tr.querySelector('.cantidad').textContent);
+      if (cantidad > 1) cantidad--;
+      else cantidad = 0;
+      actualizarCantidad(itemId, cantidad, tr);
+    });
+  });
+  // Aumentar cantidad
+  document.querySelectorAll('.btn-aumentar').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const tr = btn.closest('tr');
+      const itemId = tr.dataset.itemId;
+      let cantidad = parseInt(tr.querySelector('.cantidad').textContent) + 1;
+      actualizarCantidad(itemId, cantidad, tr);
+    });
+  });
+  // Eliminar item
+  document.querySelectorAll('.btn-eliminar').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const tr = btn.closest('tr');
+      const itemId = tr.dataset.itemId;
+      eliminarItem(itemId, tr);
+    });
+  });
+  // Vaciar carrito
+  const vaciarBtn = document.querySelector('#modalVaciarCarrito form button[type="submit"]');
+  if (vaciarBtn) {
+    vaciarBtn.type = 'button';
+    vaciarBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      vaciarCarrito();
+    });
+  }
+  // Actualizar mini-carrito al cargar
+  actualizarMiniCarrito(obtenerCantidadCarrito());
+});
+
+function actualizarCantidad(itemId, cantidad, tr) {
+  fetch('{% url "ajax_actualizar_cantidad_carrito" %}', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'X-CSRFToken': '{{ csrf_token }}'
+    },
+    body: `item_id=${itemId}&cantidad=${cantidad}`
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.ok) {
+      if (data.cantidad > 0) {
+        tr.querySelector('.cantidad').textContent = data.cantidad;
+      } else {
+        tr.remove();
+      }
+      document.getElementById('carrito-total').textContent = data.total;
+      mostrarToast(data.msg, 'success');
+      actualizarMiniCarrito(obtenerCantidadCarrito());
+    } else {
+      mostrarToast(data.msg, 'danger');
+    }
+  });
+}
+
+function eliminarItem(itemId, tr) {
+  fetch('{% url "ajax_eliminar_item_carrito" %}', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'X-CSRFToken': '{{ csrf_token }}'
+    },
+    body: `item_id=${itemId}`
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.ok) {
+      tr.remove();
+      document.getElementById('carrito-total').textContent = data.total;
+      mostrarToast(data.msg, 'success');
+      actualizarMiniCarrito(obtenerCantidadCarrito());
+    } else {
+      mostrarToast(data.msg, 'danger');
+    }
+  });
+}
+
+function vaciarCarrito() {
+  fetch('{% url "ajax_vaciar_carrito" %}', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'X-CSRFToken': '{{ csrf_token }}'
+    }
+  })
+  .then(r => r.json())
+  .then(data => {
+    if (data.ok) {
+      document.querySelectorAll('#tabla-carrito tbody tr').forEach(tr => tr.remove());
+      document.getElementById('carrito-total').textContent = data.total;
+      mostrarToast(data.msg, 'success');
+      actualizarMiniCarrito(0);
+      var modal = bootstrap.Modal.getInstance(document.getElementById('modalVaciarCarrito'));
+      if (modal) modal.hide();
+    } else {
+      mostrarToast(data.msg, 'danger');
+    }
+  });
+}
+</script>
+<style>
+.pastel-btn-seguir-comprando {
+  border-radius: 2em;
+  font-size: 1.1em;
+  font-weight: 600;
+  background: #232946;
+  color: #fff;
+  border: none;
+  box-shadow: 0 2px 8px #23294633;
+  transition: transform 0.15s, box-shadow 0.15s, background 0.2s;
+}
+.pastel-btn-seguir-comprando:hover {
+  background: #121629;
+  color: #fff;
+  transform: scale(1.07);
+  box-shadow: 0 4px 16px #23294644;
+}
+.pastel-toast {
+  border-radius: 1em;
+  font-size: 1em;
+  background: #fbc2eb;
+  color: #232946;
+  box-shadow: 0 2px 8px #d1b3ff44;
+}
+</style>
+{% else %}
+<p>El carrito está vacío.</p>
+{% endif %}
+{% endblock %}

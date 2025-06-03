@@ -1,0 +1,39 @@
+{% extends 'tienda/base.html' %}
+{% block content %}
+<h2 class="mb-4 pastel-title"><i class="bi bi-receipt"></i> Mis Compras</h2>
+<table class="table table-hover pastel-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Fecha</th>
+      <th>Total</th>
+      <th>Detalle</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for venta in ventas %}
+    <tr>
+      <td>{{ venta.id }}</td>
+      <td>{{ venta.fecha|date:'Y-m-d H:i' }}</td>
+      <td>${{ venta.total|floatformat:2 }}</td>
+      <td>
+        <ul class="mb-0">
+          {% for det in venta.detalles.all %}
+            <li>
+              {% if det.producto %}
+                <b>{{ det.producto.nombre }}</b> (Producto)
+              {% elif det.accesorio %}
+                <b>{{ det.accesorio.nombre }}</b> (Accesorio)
+              {% endif %}
+              x{{ det.cantidad }} - ${{ det.precio_unitario|floatformat:2 }}
+            </li>
+          {% endfor %}
+        </ul>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="4" class="text-center">No has realizado compras aún.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

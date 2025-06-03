@@ -1,0 +1,43 @@
+{% extends 'tienda/base.html' %}
+{% block content %}
+<div class="row justify-content-center align-items-center min-vh-80">
+  <div class="col-md-10 col-lg-8">
+    <div class="card pastel-card p-4 shadow-lg border-0 animate__animated animate__fadeIn">
+      <div class="row g-4 align-items-center">
+        <div class="col-md-5 text-center">
+          {% if producto.imagen %}
+          <img src="{{ producto.imagen.url }}" class="img-fluid rounded pastel-img-lg mb-3 shadow-sm" alt="{{ producto.nombre }}">
+          {% endif %}
+        </div>
+        <div class="col-md-7 d-flex flex-column justify-content-center h-100">
+          <h2 class="mb-2 pastel-title"><i class="bi bi-box-seam"></i> {{ producto.nombre }}</h2>
+          <div class="mb-3">
+            <div class="row g-2 align-items-center">
+              {% if producto.categoria %}
+              <div class="col-auto">
+                <span class="badge bg-secondary"><i class="bi bi-tag"></i> {{ producto.categoria.nombre }}</span>
+              </div>
+              {% endif %}
+              <div class="col-auto">
+                <span class="pastel-precio">${{ producto.precio }}</span>
+              </div>
+              <div class="col-auto">
+                <span class="badge bg-light text-dark border"><i class="bi bi-box"></i> Stock: {{ producto.stock }}</span>
+              </div>
+            </div>
+          </div>
+          <p class="lead mb-3 text-justify">{{ producto.descripcion }}</p>
+          <div class="d-flex flex-wrap gap-2 mt-4">
+            {% if user.is_authenticated %}
+            <a href="{% url 'agregar_al_carrito' producto.id %}" class="btn btn-pastel-detalle px-4 py-2"><i class="bi bi-cart-plus"></i> Agregar al carrito</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn btn-outline-secondary px-4 py-2"><i class="bi bi-box-arrow-in-right"></i> Inicia sesión para comprar</a>
+            {% endif %}
+            <a href="/productos/" class="btn btn-link mt-2"><i class="bi bi-arrow-left"></i> Volver a productos</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

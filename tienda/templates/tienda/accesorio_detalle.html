@@ -1,0 +1,35 @@
+{% extends 'tienda/base.html' %}
+{% block content %}
+<div class="row justify-content-center align-items-center min-vh-80">
+  <div class="col-md-10 col-lg-8">
+    <div class="card pastel-card p-4 shadow-lg border-0 animate__animated animate__fadeIn">
+      <div class="row g-4 align-items-center">
+        <div class="col-md-5 text-center">
+          {% if accesorio.imagen %}
+          <img src="{{ accesorio.imagen.url }}" class="img-fluid rounded pastel-img-lg mb-3 shadow-sm" alt="{{ accesorio.nombre }}">
+          {% endif %}
+        </div>
+        <div class="col-md-7 d-flex flex-column justify-content-center h-100">
+          <h2 class="mb-2 pastel-title"><i class="bi bi-bag-heart"></i> {{ accesorio.nombre }}</h2>
+          <div class="d-flex align-items-center mb-3 gap-2">
+            {% if accesorio.categoria %}
+            <span class="badge bg-secondary"><i class="bi bi-tag"></i> {{ accesorio.categoria.nombre }}</span>
+            {% endif %}
+            <span class="pastel-precio">${{ accesorio.precio }}</span>
+            <span class="badge bg-light text-dark border ms-2"><i class="bi bi-box"></i> Stock: {{ accesorio.stock }}</span>
+          </div>
+          <p class="lead mb-3">{{ accesorio.descripcion }}</p>
+          <div class="d-flex flex-wrap gap-2 mt-4">
+            {% if user.is_authenticated %}
+            <a href="{% url 'agregar_accesorio_al_carrito' accesorio.id %}" class="btn btn-pastel-detalle px-4 py-2"><i class="bi bi-cart-plus"></i> Agregar al carrito</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="btn btn-outline-secondary px-4 py-2"><i class="bi bi-box-arrow-in-right"></i> Inicia sesión para comprar</a>
+            {% endif %}
+            <a href="/accesorios/" class="btn btn-link mt-2"><i class="bi bi-arrow-left"></i> Volver a accesorios</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

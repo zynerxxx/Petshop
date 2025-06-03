@@ -1,0 +1,160 @@
+{% extends 'tienda/base.html' %}
+{% block content %}
+<style>
+  body.registro-bg {
+    background: linear-gradient(120deg, #e9ecef 0%, #f5f6fa 100%) !important;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .registro-viewport {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 !important;
+    padding: 48px 0 32px 0 !important;
+    min-height: 0;
+  }
+  .registro-card {
+    background: #fff;
+    border-radius: 1.5rem;
+    box-shadow: 0 6px 32px #bfc0c0;
+    padding: 2.5rem 2.2rem 2rem 2.2rem;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 440px;
+  }
+  .registro-card .form-control {
+    border-radius: 0.7rem;
+    font-size: 1.1rem;
+    padding-left: 1.1rem;
+    border: 1.5px solid #e3e3e3;
+    box-shadow: none !important;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .registro-card .form-control:focus {
+    border-color: #19a7ce;
+    box-shadow: 0 0 0 2px #19a7ce33 !important;
+    outline: none;
+    background: #f8fafc;
+  }
+  .registro-card .input-group-text {
+    background: #f5f6fa;
+    border: none;
+    border-radius: 0.7rem 0 0 0.7rem;
+    color: #232946;
+    font-size: 1.2rem;
+  }
+  .registro-card .btn-registro {
+    background: linear-gradient(90deg, #232946, #393e46);
+    color: #fff;
+    border: none;
+    border-radius: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 0.7rem 1.2rem;
+    font-size: 1.1rem;
+    box-shadow: 0 2px 8px #e0e0e0;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+    text-transform: uppercase;
+  }
+  .registro-card .btn-registro:hover {
+    background: linear-gradient(90deg, #393e46, #232946);
+    color: #fff;
+    box-shadow: 0 4px 16px #bfc0c0;
+    transform: translateY(-2px) scale(1.03);
+  }
+  .registro-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.2rem;
+  }
+  .registro-logo i {
+    font-size: 2.3rem;
+    color: #19a7ce;
+    margin-right: 0.7rem;
+  }
+  .registro-logo span {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #232946;
+    letter-spacing: 1px;
+  }
+  .registro-card .form-label {
+    font-weight: 500;
+    color: #232946;
+    margin-bottom: 0.2rem;
+  }
+  .registro-card .form-error {
+    color: #d9534f;
+    font-size: 0.98em;
+    margin-top: 0.2em;
+    margin-bottom: 0.2em;
+    margin-left: 0.5em;
+  }
+  @media (max-height: 600px) {
+    .registro-card { padding: 1.2rem 0.7rem 1rem 0.7rem; }
+    .registro-viewport { padding: 12px 0 12px 0 !important; }
+  }
+</style>
+<script>
+  document.body.classList.add('registro-bg');
+</script>
+<div class="registro-viewport">
+  <div class="registro-card">
+    <div class="registro-logo mb-2">
+      <i class="bi bi-person-plus"></i>
+      <span>Crear cuenta</span>
+    </div>
+    <form method="post" autocomplete="off">
+      {% csrf_token %}
+      {{ form.non_field_errors }}
+      <div class="mb-3 input-group">
+        <span class="input-group-text"><i class="bi bi-person"></i></span>
+        {{ form.username }}
+      </div>
+      {% if form.username.errors %}<div class="form-error">{{ form.username.errors }}</div>{% endif %}
+      <div class="mb-3 input-group">
+        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+        {{ form.email }}
+      </div>
+      {% if form.email.errors %}<div class="form-error">{{ form.email.errors }}</div>{% endif %}
+      <div class="mb-3 input-group">
+        <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+        {{ form.first_name }}
+      </div>
+      {% if form.first_name.errors %}<div class="form-error">{{ form.first_name.errors }}</div>{% endif %}
+      <div class="mb-3 input-group">
+        <span class="input-group-text"><i class="bi bi-person-badge-fill"></i></span>
+        {{ form.last_name }}
+      </div>
+      {% if form.last_name.errors %}<div class="form-error">{{ form.last_name.errors }}</div>{% endif %}
+      <div class="mb-3 input-group">
+        <span class="input-group-text"><i class="bi bi-lock"></i></span>
+        {{ form.password1 }}
+      </div>
+      {% if form.password1.errors %}<div class="form-error">{{ form.password1.errors }}</div>{% endif %}
+      <div class="mb-3 input-group">
+        <span class="input-group-text"><i class="bi bi-lock-fill"></i></span>
+        {{ form.password2 }}
+      </div>
+      {% if form.password2.errors %}<div class="form-error">{{ form.password2.errors }}</div>{% endif %}
+      <button type="submit" class="btn btn-registro w-100 mt-2 mb-2">
+        <i class="bi bi-person-plus"></i> Registrarse
+      </button>
+    </form>
+    <div class="text-center mt-2">
+      <a href="{% url 'login' %}" class="forgot-link"><i class="bi bi-box-arrow-in-right"></i> ¿Ya tienes cuenta? Inicia sesión</a>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('beforeunload', function() {
+    document.body.classList.remove('registro-bg');
+  });
+</script>
+{% endblock %}

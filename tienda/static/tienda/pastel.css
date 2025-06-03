@@ -1,0 +1,477 @@
+/* Estilo elegante y formal para Petshop */
+
+body, .pastel-bg {
+  background: linear-gradient(120deg, #f5f6fa 0%, #e9ecef 100%) !important;
+}
+
+.pastel-title {
+  color: #232946;
+  font-weight: bold;
+  font-size: 2.5rem;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px #e9ecef;
+}
+
+.pastel-card {
+  background: linear-gradient(135deg, #fff 0%, #f3f4f6 100%);
+  border: 1px solid #e3e3e3;
+  border-radius: 1.2rem;
+  box-shadow: 0 4px 24px #d1d1d1;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.pastel-card:hover {
+  transform: translateY(-6px) scale(1.03);
+  box-shadow: 0 8px 32px #bfc0c0;
+}
+
+.pastel-precio {
+  color: #232946;
+  font-size: 1.25rem;
+  font-weight: 700;
+  background: #f5f6fa;
+  border: none;
+  border-radius: 0.7rem;
+  padding: 0.5rem 1.2rem;
+  margin-bottom: 0.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px #e9ecef;
+  letter-spacing: 0.5px;
+  gap: 0.5rem;
+}
+.pastel-precio::before {
+  content: "\F155";
+  font-family: "bootstrap-icons";
+  font-size: 1.2rem;
+  color: #19a7ce;
+  margin-right: 0.3rem;
+}
+
+.pastel-card .pastel-precio {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Navbar Material UI style */
+.navbar {
+  background: #232946 !important;
+  border-bottom: 1.5px solid #e3e3e3;
+  box-shadow: 0 2px 12px #e9ecef;
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
+}
+.navbar .navbar-brand {
+  color: #19a7ce !important;
+  font-weight: bold;
+  font-size: 1.6rem;
+  letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.navbar .navbar-brand:hover {
+  color: #146c94 !important;
+}
+.navbar .nav-link {
+  color: #fff !important;
+  font-weight: 500;
+  font-size: 1.08rem;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  border-radius: 0.5rem;
+  transition: color 0.2s, background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.8rem;
+}
+.navbar .nav-link:hover, .navbar .nav-link.active {
+  color: #19a7ce !important;
+  background: #f5f6fa;
+}
+.navbar .dropdown-menu {
+  background: #f5f6fa;
+  border-radius: 0.7rem;
+  border: 1px solid #e3e3e3;
+  box-shadow: 0 2px 12px #e9ecef;
+}
+.navbar .dropdown-item {
+  color: #232946;
+  font-weight: 500;
+  border-radius: 0.5rem;
+  transition: background 0.2s, color 0.2s;
+}
+.navbar .dropdown-item:hover {
+  background: #e9ecef;
+  color: #19a7ce;
+}
+
+.navbar .badge {
+  background: #19a7ce !important;
+  color: #fff !important;
+  font-size: 0.85em;
+  font-weight: 600;
+  box-shadow: 0 1px 4px #bfc0c0;
+}
+
+/* Botones tipo Material UI */
+.btn-pastel {
+  background: linear-gradient(90deg, #232946, #393e46);
+  color: #fff;
+  border: none;
+  border-radius: 0.7rem;
+  font-weight: 500;
+  box-shadow: 0 2px 8px #e0e0e0;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 0.6rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.btn-pastel:hover {
+  background: linear-gradient(90deg, #393e46, #232946);
+  color: #fff;
+  box-shadow: 0 4px 16px #bfc0c0;
+  transform: translateY(-2px) scale(1.03);
+}
+
+.btn-pastel-detalle {
+  background: linear-gradient(90deg, #e3e6f3 0%, #b6c6e6 100%);
+  color: #232946;
+  border: none;
+  border-radius: 1.2rem;
+  font-weight: 600;
+  box-shadow: 0 2px 8px #e9ecef;
+  transition: background 0.3s, color 0.2s, box-shadow 0.2s, transform 0.2s;
+  letter-spacing: 0.5px;
+  padding: 0.6rem 1.2rem;
+  font-size: 1.05rem;
+  position: relative;
+  overflow: hidden;
+}
+.btn-pastel-detalle::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(35,41,70,0.08);
+  border-radius: 100%;
+  transform: translate(-50%, -50%);
+  transition: width 0.4s cubic-bezier(.4,0,.2,1), height 0.4s cubic-bezier(.4,0,.2,1);
+  z-index: 0;
+}
+.btn-pastel-detalle:hover::after {
+  width: 250%;
+  height: 600%;
+}
+.btn-pastel-detalle:hover, .btn-pastel-detalle:focus {
+  background: linear-gradient(90deg, #b6c6e6 0%, #e3e6f3 100%);
+  color: #232946;
+  box-shadow: 0 6px 24px #bfc0c0;
+  transform: translateY(-2px) scale(1.03);
+}
+.btn-pastel-detalle i {
+  margin-right: 0.4em;
+}
+.btn-pastel-detalle:active {
+  transform: scale(0.98);
+}
+
+.btn-outline-primary {
+  border-radius: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  padding: 0.6rem 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.pastel-table th {
+  background: #232946;
+  color: #fff;
+  font-weight: 600;
+}
+
+/* Carrito minimalista */
+.pastel-table th, .pastel-table td {
+  vertical-align: middle;
+  border: none;
+  background: transparent;
+}
+.pastel-table thead th {
+  background: #232946;
+  color: #fff;
+  font-weight: 600;
+  border-radius: 0.7rem 0.7rem 0 0;
+  border-bottom: 2px solid #e3e3e3;
+}
+.pastel-table tbody tr {
+  background: #f5f6fa;
+  border-radius: 0.7rem;
+  box-shadow: 0 2px 8px #e9ecef;
+  margin-bottom: 0.5rem;
+}
+.pastel-table tbody tr td {
+  border-top: none;
+}
+.pastel-table .badge {
+  font-size: 0.85em;
+  font-weight: 500;
+  padding: 0.4em 0.8em;
+  border-radius: 0.7em;
+}
+
+/* Modal minimalista */
+.modal-content {
+  border-radius: 1.2rem;
+  border: none;
+  box-shadow: 0 8px 32px #bfc0c0;
+  background: #fff;
+}
+.modal-header {
+  border-bottom: none;
+  background: #232946;
+  color: #fff;
+  border-radius: 1.2rem 1.2rem 0 0;
+}
+.modal-title i {
+  margin-right: 0.5em;
+}
+.modal-footer {
+  border-top: none;
+  background: #f5f6fa;
+  border-radius: 0 0 1.2rem 1.2rem;
+}
+.modal-body {
+  background: #fff;
+}
+.btn-close {
+  filter: invert(1);
+}
+
+.pastel-alert {
+  background: #e3e3e3;
+  color: #232946;
+  border: none;
+  border-radius: 0.7rem;
+  font-size: 1.1rem;
+}
+
+.pastel-link {
+  color: #232946;
+  text-decoration: underline;
+  font-weight: 500;
+}
+.pastel-link:hover {
+  color: #393e46;
+}
+
+.pastel-shadow {
+  box-shadow: 0 2px 16px #d1d1d1;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  background: #f5f6fa;
+}
+::-webkit-scrollbar-thumb {
+  background: #e9ecef;
+  border-radius: 10px;
+}
+
+.producto-card {
+  min-height: 480px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  opacity: 0;
+  transform: translateY(30px) scale(0.98);
+  transition: opacity 0.5s cubic-bezier(.4,0,.2,1), transform 0.5s cubic-bezier(.4,0,.2,1), box-shadow 0.5s cubic-bezier(.4,0,.2,1);
+}
+.producto-card.visible {
+  opacity: 1;
+  transform: none;
+}
+.producto-img-wrapper {
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #fff;
+  border-radius: 10px 10px 0 0;
+}
+.producto-img {
+  max-height: 160px;
+  max-width: 100%;
+  object-fit: contain;
+}
+.pastel-img-lg {
+  max-width: 340px;
+  max-height: 340px;
+  object-fit: contain;
+  background: #f5f6fa;
+  border-radius: 1.2rem;
+  box-shadow: 0 2px 16px #e9ecef;
+  padding: 1.2rem;
+}
+.min-vh-80 {
+  min-height: 80vh;
+}
+/* Animación fadeIn (si no usas animate.css, aquí una versión simple) */
+.animate__fadeIn {
+  animation: fadeIn 0.7s cubic-bezier(.4,0,.2,1);
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: none; }
+}
+@media (max-width: 991.98px) {
+  .producto-card {
+    min-height: 420px;
+  }
+  .producto-img-wrapper {
+    height: 140px;
+  }
+}
+@media (max-width: 767.98px) {
+  .producto-card {
+    min-height: 360px;
+  }
+  .producto-img-wrapper {
+    height: 100px;
+  }
+}
+@media (max-width: 575.98px) {
+  .producto-card {
+    min-height: 320px;
+    width: 100%;
+  }
+  .producto-img-wrapper {
+    height: 80px;
+  }
+}
+
+.card-info-fixed {
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.card-body .mb-2[style] {
+  min-height: 56px !important;
+}
+
+/* Toaster minimalista */
+.toast-container {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 1080;
+}
+.toast {
+  min-width: 260px;
+  border-radius: 1rem;
+  background: #232946;
+  color: #fff;
+  box-shadow: 0 4px 24px #bfc0c0;
+  border: none;
+  opacity: 0.98;
+  animation: toastIn 0.5s cubic-bezier(.4,0,.2,1);
+}
+.toast.hide {
+  animation: toastOut 0.5s cubic-bezier(.4,0,.2,1);
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(-30px) scale(0.95); }
+  to { opacity: 0.98; transform: none; }
+}
+@keyframes toastOut {
+  from { opacity: 0.98; transform: none; }
+  to { opacity: 0; transform: translateY(-30px) scale(0.95); }
+}
+.toast .btn-close {
+  filter: invert(1);
+}
+
+/* Botones agregar/quitar cantidad */
+.btn-cantidad {
+  border-radius: 50%;
+  width: 2.2em;
+  height: 2.2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2em;
+  font-weight: bold;
+  background: #e3e6f3;
+  color: #232946;
+  border: none;
+  box-shadow: 0 2px 8px #e9ecef;
+  transition: background 0.2s, color 0.2s, transform 0.15s;
+}
+.btn-cantidad:hover, .btn-cantidad:focus {
+  background: #232946;
+  color: #fff;
+  transform: scale(1.08);
+}
+.btn-cantidad:active {
+  transform: scale(0.95);
+}
+
+.badge-producto {
+  background: linear-gradient(90deg, #19a7ce 60%, #146c94 100%);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 1em;
+  box-shadow: 0 2px 8px #b6e6fa44;
+}
+.badge-accesorio {
+  background: linear-gradient(90deg, #b388ff 60%, #7c4dff 100%);
+  color: #fff;
+  font-weight: 600;
+  border-radius: 1em;
+  box-shadow: 0 2px 8px #d1b3ff44;
+}
+
+/* Loader de navegación */
+#page-loader {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100vw; height: 100vh;
+  background: rgba(35,41,70,0.7);
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+#page-loader.active {
+  opacity: 1;
+  pointer-events: all;
+}
+.loader-ring {
+  width: 60px;
+  height: 60px;
+  border: 6px solid #19a7ce;
+  border-top: 6px solid #fff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

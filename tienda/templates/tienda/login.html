@@ -1,0 +1,137 @@
+{% extends 'tienda/base.html' %}
+{% block content %}
+<style>
+  body.login-bg {
+    background: linear-gradient(120deg, #e9ecef 0%, #f5f6fa 100%) !important;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  .login-viewport {
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 !important;
+    padding: 48px 0 32px 0 !important; /* Espacio arriba y abajo para centrar visualmente */
+    min-height: 0;
+  }
+  .login-card {
+    background: #fff;
+    border-radius: 1.5rem;
+    box-shadow: 0 6px 32px #bfc0c0;
+    padding: 2.5rem 2.2rem 2rem 2.2rem;
+    border: none;
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    max-width: 410px;
+  }
+  .login-card .form-control {
+    border-radius: 0.7rem;
+    font-size: 1.1rem;
+    padding-left: 1.1rem; /* Menos padding para acercar el input al ícono */
+    border: 1.5px solid #e3e3e3;
+    box-shadow: none !important;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .login-card .form-control:focus {
+    border-color: #19a7ce;
+    box-shadow: 0 0 0 2px #19a7ce33 !important;
+    outline: none;
+    background: #f8fafc;
+  }
+  .login-card .input-group-text {
+    background: #f5f6fa;
+    border: none;
+    border-radius: 0.7rem 0 0 0.7rem;
+    color: #232946;
+    font-size: 1.2rem;
+  }
+  .login-card .btn-login {
+    background: linear-gradient(90deg, #232946, #393e46);
+    color: #fff;
+    border: none;
+    border-radius: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 0.7rem 1.2rem;
+    font-size: 1.1rem;
+    box-shadow: 0 2px 8px #e0e0e0;
+    transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+    text-transform: uppercase;
+  }
+  .login-card .btn-login:hover {
+    background: linear-gradient(90deg, #393e46, #232946);
+    color: #fff;
+    box-shadow: 0 4px 16px #bfc0c0;
+    transform: translateY(-2px) scale(1.03);
+  }
+  .login-card .forgot-link {
+    color: #232946;
+    font-size: 0.98rem;
+    text-decoration: underline;
+    transition: color 0.2s;
+  }
+  .login-card .forgot-link:hover {
+    color: #146c94;
+  }
+  .login-logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.2rem;
+  }
+  .login-logo i {
+    font-size: 2.7rem;
+    color: #19a7ce;
+    margin-right: 0.7rem;
+  }
+  .login-logo span {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #232946;
+    letter-spacing: 1px;
+  }
+  @media (max-height: 600px) {
+    .login-card { padding: 1.2rem 0.7rem 1rem 0.7rem; }
+    .login-viewport { padding: 12px 0 12px 0 !important; }
+  }
+</style>
+<script>
+  document.body.classList.add('login-bg');
+</script>
+<div class="login-viewport">
+  <div class="login-card">
+    <div class="login-logo mb-2">
+      <i class="bi bi-heart-pulse"></i>
+      <span>Petshop</span>
+    </div>
+    <h3 class="mb-4 text-center" style="font-weight:600; color:#232946; letter-spacing:0.5px;">
+      Iniciar sesión <i class="bi bi-box-arrow-in-right"></i>
+    </h3>
+    <form id="loginForm" method="post" action="" autocomplete="on">
+      {% csrf_token %}
+      <div class="mb-3 input-group">
+        <span class="input-group-text"><i class="bi bi-person"></i></span>
+        <input type="text" name="username" class="form-control" placeholder="Usuario" required autofocus>
+      </div>
+      <div class="mb-3 input-group">
+        <span class="input-group-text"><i class="bi bi-lock"></i></span>
+        <input type="password" name="password" class="form-control" placeholder="Contraseña" required>
+      </div>
+      <button type="submit" class="btn btn-login w-100 mt-2 mb-2">
+        <i class="bi bi-door-open"></i> Entrar
+      </button>
+    </form>
+    <div class="text-center mt-2">
+      <a href="{% url 'password_reset' %}" class="forgot-link"><i class="bi bi-question-circle"></i> ¿Olvidaste tu contraseña?</a>
+    </div>
+  </div>
+</div>
+<script>
+  window.addEventListener('beforeunload', function() {
+    document.body.classList.remove('login-bg');
+  });
+</script>
+{% endblock %}
